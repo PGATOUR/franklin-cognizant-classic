@@ -739,7 +739,7 @@ initHlx();
 
 const LCP_BLOCKS = ['carousel', 'hero']; // add your LCP blocks to the list
 const RUM_GENERATION = 'intercept-aa-2'; // add your RUM generation information here
-const PRODUCTION_DOMAINS = [''];
+const PRODUCTION_DOMAINS = ['thecognizantclassic.com'];
 
 sampleRUM('top');
 window.addEventListener('load', () => sampleRUM('load'));
@@ -954,21 +954,13 @@ function decorateFevoButtons(main) {
   const fevoButtons = main.querySelectorAll('a[href*="fevogm.com"]');
   if (fevoButtons.length > 0) {
     fevoButtons.forEach((a) => {
-      const url = new URL(a.href);
-      const offerCode = url.searchParams.get('offercode');
+      const offerCode = new URL(a.href).searchParams.get('offercode');
       if (offerCode) {
-        const isWeFevo = url.hostname === 'we.fevogm.com';
-        if (isWeFevo) {
-          a.classList.add('we-fevo-btn');
-          a.setAttribute('data-fevo-offer-id', offerCode);
-        } else {
-          a.classList.add('fevo-btn');
-        }
-
+        a.classList.add('fevo-btn');
         a.addEventListener('click', (e) => {
           e.preventDefault();
-          // window.GMWidget is loaded in delayed, so check if it's been loaded
-          if (!isWeFevo && window.GMWidget) {
+          // this gets loaded in delayed, so checking JIC
+          if (window.GMWidget) {
             window.GMWidget.open(offerCode);
           }
         });
@@ -1122,6 +1114,20 @@ export function addHeaderSizing(block, classPrefix = 'heading', selector = 'h1, 
   });
 }
 
+export function clearDataLayer() {
+  window.adobeDataLayer = [];
+}
+
+export function pushOneTrustConsentGroups() {
+  window.adobeDataLayer = window.adobeDataLayer || [];
+  const dl = window.adobeDataLayer;
+  dl.push({
+    event: 'LaunchOTLoaded',
+    // eslint-disable-next-line no-undef
+    OnetrustActiveGroups: typeof OnetrustActiveGroups !== 'undefined' ? OnetrustActiveGroups : '',
+  });
+}
+
 function getPageNameAndSections() {
   const pageSectionParts = window.location.pathname.split('/').filter((subPath) => subPath !== '');
   const pageName = pageSectionParts.join(':');
@@ -1134,15 +1140,15 @@ function getPageNameAndSections() {
 }
 
 export async function sendAnalyticsPageEvent() {
-  window.dataLayer = window.dataLayer || [];
-  const dl = window.dataLayer;
+  window.adobeDataLayer = window.adobeDataLayer || [];
+  const dl = window.adobeDataLayer;
   const placeholders = await fetchPlaceholders();
   const isUserLoggedIn = window.gigyaAccountInfo && window.gigyaAccountInfo != null
     && window.gigyaAccountInfo.errorCode === 0;
 
   const { pageName, sections } = getPageNameAndSections();
   dl.push({
-    event: 'pageload',
+    event: 'pageLoaded',
     pageName,
     pageUrl: window.location.href,
     siteSection: sections[0] || '',
@@ -1150,7 +1156,7 @@ export async function sendAnalyticsPageEvent() {
     siteSubSection2: sections[2] || '',
     gigyaID: isUserLoggedIn && window.gigyaAccountInfo.UID ? window.gigyaAccountInfo.UID : '',
     userLoggedIn: isUserLoggedIn ? 'Logged In' : 'Logged Out',
-    tourName: placeholders.tourName.toLowerCase().replaceAll(' ', '_'),
+    tourName: 'pgatour',
     tournamentID: `${placeholders.tourCode.toUpperCase()}${placeholders.currentYear}${placeholders.tournamentId}`,
     ipAddress: '127.0.0.1',
     deviceType: 'Web',

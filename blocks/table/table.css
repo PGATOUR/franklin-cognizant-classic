@@ -56,7 +56,6 @@ main .table td.table-cell-num {
 }
 
 main .table td:not(.table-cell-num) {
-  font-weight: bold;
   text-align: center;
 }
 

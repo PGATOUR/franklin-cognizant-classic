@@ -10,7 +10,7 @@ function decorateChampionCardsFeed(champions, block) {
   });
   champions.forEach((champion) => {
     const year = champion.title.split(' ').pop();
-    const name = champion.title.replace('THE PLAYERS Championship:', '').replace(year, '').trim();
+    const name = champion.title.replace('THE Cognizant Classic Championship:', '').replace(year, '').trim();
     const card = document.createElement('div');
     card.innerHTML = `<div>
         <a href="${champion.path}">${createOptimizedPicture(champion.image).outerHTML}</a>

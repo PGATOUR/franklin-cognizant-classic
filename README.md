@@ -1,9 +1,9 @@
-# Your Project's Title...
-Your project's description...
+# The Cognizant Classic
 
 ## Environments
-- Preview: https://main--franklin-the-players--pgatour.hlx.page/
-- Live: https://main--franklin-the-players--pgatour.hlx.live/
+- Preview: https://main--franklin-cognizant-classic--pgatour.hlx.page/
+- Live: https://main--franklin-cognizant-classic--pgatour.hlx.live/
+- Prod: https://thecognizantclassic.com/
 
 ## Installation
 

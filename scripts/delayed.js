@@ -8,6 +8,8 @@ import {
   loadScript,
   getMetadata,
   fetchGraphQL,
+  clearDataLayer,
+  pushOneTrustConsentGroups,
   sendAnalyticsPageEvent,
 } from './scripts.js';
 
@@ -680,7 +682,6 @@ async function OptanonWrapper() {
       console.error('OptIn_PreviousPermissions parse failed');
     }
   }
-  sendAnalyticsPageEvent();
 }
 
 const otId = placeholders.onetrustId;
@@ -736,22 +737,7 @@ function injectFevoScript() {
 
   return fevoWidget;
 }
-
-function injectWeFevoScript() {
-  loadScript('https://offer.fevo.com/js/fevo.js', () => { }, {
-    type: 'text/javascript',
-  });
-}
-
-// there are 2 distinct types of fevo buttons
-// and we need to support both
-// see decorateFevoButtons in scripts.js
 const hasFevo = document.querySelector('a.fevo-btn');
 if (hasFevo) {
   injectFevoScript();
-}
-
-const hasWeFevo = document.querySelector('a.we-fevo-btn');
-if (hasWeFevo) {
-  injectWeFevoScript();
 }
