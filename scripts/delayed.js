@@ -742,11 +742,6 @@ if (hasFevo) {
   injectFevoScript();
 }
 
-const hasWeFevo = document.querySelector('a.we-fevo-btn');
-if (hasWeFevo) {
-  injectWeFevoScript();
-}
-
 /**
  * Loads Admiral script
  */
